@@ -51,10 +51,13 @@ public class Scrapper {
 	private int maxPropSearchAttempt = 5;
 	private String mainTab;
 	private String exportFolder;
-	Properties props;
+	private Properties props;
+	
+	private boolean scrapManual;
 
 	public Scrapper(Properties props) throws IOException {
 		this.props = props;
+		this.scrapManual = "true".equalsIgnoreCase(this.props.getProperty("scrapmanual"));
 		String webDriverLoc = props.getProperty("webdriver.location");
 		if (webDriverLoc == null) {
 			webDriverLoc = "/Users/ashish/Downloads/chromedriver_mac_arm64/chromedriver";
@@ -83,14 +86,22 @@ public class Scrapper {
 	public void scrapForMumbai() throws IOException {
 		try {
 
-			Map<String, Object> districts = MetaReader.getDisttMap(props.getProperty("district.file"));
-			for (Map.Entry<String, Object> entry : districts.entrySet()) {
-				String disttVal = entry.getKey();
-				@SuppressWarnings("unchecked")
-				List<String> areas = (List<String>) entry.getValue();
-				for (String area : areas) {
-					for (int propNo = 0; propNo < 10; propNo++) {
-						searchAndExtract(disttVal, area, propNo);
+			if (scrapManual) {
+				searchAndExtract(
+						props.getProperty("manual.distt"), 
+						props.getProperty("manual.area"), 
+						Integer.valueOf(props.getProperty("manual.propNo"))
+						);
+			} else {
+				Map<String, Object> districts = MetaReader.getDisttMap(props.getProperty("district.file"));
+				for (Map.Entry<String, Object> entry : districts.entrySet()) {
+					String disttVal = entry.getKey();
+					@SuppressWarnings("unchecked")
+					List<String> areas = (List<String>) entry.getValue();
+					for (String area : areas) {
+						for (int propNo = 0; propNo < 10; propNo++) {
+							searchAndExtract(disttVal, area, propNo);
+						}
 					}
 				}
 			}
@@ -212,6 +223,7 @@ public class Scrapper {
 				Thread.sleep(500);
 				List<WebElement> colElements = rowElement.findElements(By.tagName("td"));
 				List<String> csvRow = colElements.stream().map(el -> el.getText().toString()).collect(Collectors.toList());
+				csvRow.add(String.valueOf(currPage + 1));
 				csvRow.addAll(getIndexII(colElements.get(colElements.size() - 1).findElements(By.className("Button")).get(0)));
 				
 				arr = new String[csvRow.size()];

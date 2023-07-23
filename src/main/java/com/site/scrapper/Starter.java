@@ -32,6 +32,12 @@ public class Starter {
 		System.out.println("propfile = " + args[0]);
 //		InputStream stream = loader.getResourceAsStream(args[0]);
 		props.load(new FileInputStream(new File(args[0])));
+		Licence license = new Licence(props);
+		System.out.println("Your license is valid till " + license.validTill());
+		if (!license.isValid()) {
+			System.err.println("Your license is expired, please renew it to continue using the tool.");
+			return;
+		}
 		
 		Scrapper scrapper = new  Scrapper(props);
 //		if (args.length > 0) {

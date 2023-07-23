@@ -25,7 +25,7 @@ public class ExcelWriter {
 	public ExcelWriter() {
 		wb = new HSSFWorkbook();
 		sheet = wb.createSheet("mumbai");
-		headers = new ArrayList<>(Arrays.asList("DocNo","DName","RDate","SROName","Seller Name","Purchaser Name","Property Description","SROCode","Status", ""));
+		headers = new ArrayList<>(Arrays.asList("DocNo","DName","RDate","SROName","Seller Name","Purchaser Name","Property Description","SROCode","Status", "", "Page No"));
 		index2Headers = Arrays.asList("Index 2 No", "Date", "दुय्यम निबंधक", "दस्त क्रमांक", "नोदंणी", "Regn", "विलेखाचा प्रकार", "मोबदला", "बाजारभाव(भाडेपटटयाच्या बाबतितपटटाकार आकारणी देतो की पटटेदार ते नमुद करावे)", 
 				"भू-मापन,पोटहिस्सा व घरक्रमांक(असल्यास)", "क्षेत्रफळ", "आकारणी किंवा जुडी देण्यात असेल तेव्हा.", "दस्तऐवज करुन देणा-या/लिहून ठेवणा-या पक्षकाराचे नाव किंवा दिवाणी न्यायालयाचा हुकुमनामा किंवा आदेश असल्यास,प्रतिवादिचे नाव व पत्ता.",
 				"दस्तऐवज करुन घेणा-या पक्षकाराचे व किंवा दिवाणी न्यायालयाचा हुकुमनामा किंवा आदेश असल्यास,प्रतिवादिचे नाव व पत्ता", "दस्तऐवज करुन दिल्याचा दिनांक", "दस्त नोंदणी केल्याचा दिनांक",
